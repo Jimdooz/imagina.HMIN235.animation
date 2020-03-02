@@ -1,5 +1,7 @@
 /**
  * Main Loop
+ *
+ * Create loop with a callback
  */
 
 class Loop {
@@ -18,6 +20,9 @@ class Loop {
     window.requestAnimationFrame((timestamp) => { this.Loop(timestamp) });
   }
 
+  /**
+   *
+   */
   Loop(timestamp) {
     this.Time.delta = (timestamp - this.Time.last) / 1000;
     this.Time.last = timestamp;

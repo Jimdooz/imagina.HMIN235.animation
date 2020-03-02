@@ -97,21 +97,21 @@ let BEZIERCURVE = {
 window.addEventListener('mousemove', function(e) {
   if(BEZIERCURVE.p1_edit || BEZIERCURVE.p2_edit) getMousePos(canvasBezier, e);
   if(BEZIERCURVE.p1_edit){
-    let x = mouse.x < 0 ? 0 : mouse.x > ctxBezier.canvas.width ? ctxBezier.canvas.width : mouse.x;
-    let y = mouse.y < 0 ? 0 : mouse.y > ctxBezier.canvas.height ? ctxBezier.canvas.height : mouse.y;
-    BEZIERCURVE.p1 = new Vector2(x, mouse.y);
+    let x = MOUSE.x < 0 ? 0 : MOUSE.x > ctxBezier.canvas.width ? ctxBezier.canvas.width : MOUSE.x;
+    let y = MOUSE.y < 0 ? 0 : MOUSE.y > ctxBezier.canvas.height ? ctxBezier.canvas.height : MOUSE.y;
+    BEZIERCURVE.p1 = new Vector2(x, MOUSE.y);
     BEZIERCURVE.showCurve();
   }else if(BEZIERCURVE.p2_edit){
-    let x = mouse.x < 0 ? 0 : mouse.x > ctxBezier.canvas.width ? ctxBezier.canvas.width : mouse.x;
-    let y = mouse.y < 0 ? 0 : mouse.y > ctxBezier.canvas.height ? ctxBezier.canvas.height : mouse.y;
-    BEZIERCURVE.p2 = new Vector2(x, mouse.y);
+    let x = MOUSE.x < 0 ? 0 : MOUSE.x > ctxBezier.canvas.width ? ctxBezier.canvas.width : MOUSE.x;
+    let y = MOUSE.y < 0 ? 0 : MOUSE.y > ctxBezier.canvas.height ? ctxBezier.canvas.height : MOUSE.y;
+    BEZIERCURVE.p2 = new Vector2(x, MOUSE.y);
     BEZIERCURVE.showCurve();
   }
 }, false);
 
 canvasBezier.addEventListener('mousedown', function(e) {
   getMousePos(canvasBezier, e);
-  if(distancePoint(mouse, BEZIERCURVE.p1) < distancePoint(mouse, BEZIERCURVE.p2)) BEZIERCURVE.p1_edit = true;
+  if(distancePoint(MOUSE, BEZIERCURVE.p1) < distancePoint(MOUSE, BEZIERCURVE.p2)) BEZIERCURVE.p1_edit = true;
   else BEZIERCURVE.p2_edit = true;
 });
 

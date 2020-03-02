@@ -1,4 +1,5 @@
 # Mini-éditeur d'animations 2D
+
 Le but de cet exercice est de construire une application interactive qui permette à un utilisateur de réaliser des animations simples.
 
 Dans la première partie, il s'agit d'animer la position d'objets graphiques simples et prédéfinis dans leur repère en suivant une courbe choisie parmi les courbes étudiées dans les exercices précédents de ce td. En option, on pourra ajouter l'animation de la position des objets selon de nouvelles courbes, définies en extension ou en compréhension par l'utilisateur.
