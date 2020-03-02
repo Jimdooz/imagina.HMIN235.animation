@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <title>Mini editeur animation</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/cartonboite.css">
+  </head>
+  <body class="-flexCStart -align-ifill centPSALL flex1 NIGHT">
+    <div class="-flexRBetween flex1 -align-ifill">
+      <div class="-flexCStart">
+      </div>
+      <canvas id="SCENE" class="flex1"></canvas>
+      <div class="-flexCStart -align-ifill -width-very-long overflow-v">
+        <div class="-flexCStart -align-ifill" id="OBJECTS"></div>
+        <canvas id="BEZIERCURVE" class="-height-very-long"></canvas>
+      </div>
+    </div>
+    <div class="-flexRBetween -align-ifill -height-very-long overflow-v">
+      <canvas id="TIMELINE" class="flex1"></canvas>
+    </div>
+  </body>
+  <script src="js/loop.js" charset="utf-8"></script>
+  <script src="js/scene.js" charset="utf-8"></script>
+  <script src="js/timeline.js" charset="utf-8"></script>
+  <script src="js/bezierGraphics.js" charset="utf-8"></script>
+</html>
