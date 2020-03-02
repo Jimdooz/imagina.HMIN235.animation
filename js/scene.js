@@ -336,13 +336,13 @@ position,
 
 ANIMATION.keyframe[EDIT_ID] = {
   0 : {
-    matrix : {
-      value : matrixScale(1),
-      // curve : {
-      //   p1 : {x: 1, y: 0},
-      //   p2 : {x: 0, y: 1},
-      // }
-    },
+    // matrix : {
+    //   value : matrixScale(1),
+    //   // curve : {
+    //   //   p1 : {x: 1, y: 0},
+    //   //   p2 : {x: 0, y: 1},
+    //   // }
+    // },
     position : {
       value : new Vector2(200,200),
     }
@@ -354,9 +354,9 @@ ANIMATION.keyframe[EDIT_ID] = {
   //   }
   // },
   20 : {
-    matrix : {
-      value : Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
-    },
+    // matrix : {
+    //   value : Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
+    // },
     position : {
       value : new Vector2(600,600),
     }

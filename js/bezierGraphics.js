@@ -33,7 +33,7 @@ let BEZIERCURVE = {
 
     ctxBezier.strokeStyle = "#fff";
 
-    let accuracy = 0.05,
+    let accuracy = 0.005,
       p0 = {x: 0, y: h},
       p1 = BEZIERCURVE.p1,
       p2 = BEZIERCURVE.p2,
@@ -76,20 +76,24 @@ let BEZIERCURVE = {
     //Draw curve
     ctxBezier.strokeStyle = "rgba(255,255,255,1)";
     ctxBezier.moveTo(p0.x, p0.y);
+
+
+    //P0 -> Init point
+
     for (let i=0; i<1; i+=accuracy){
        let p = bezier(i, p0, p1, p2, p3);
 
        //Show P1
-       ctxBezier.beginPath();
-       ctxBezier.strokeStyle = "rgb(247, 221, 114)";
-       ctxBezier.fillStyle = "rgb(247, 221, 114)";
-       ctxBezier.arc(p.x, p.y, 4, 0, Math.PI * 2, true);
-       ctxBezier.fill();
-       ctxBezier.stroke();
+       // ctxBezier.beginPath();
+       // ctxBezier.strokeStyle = "rgb(247, 221, 114)";
+       // ctxBezier.fillStyle = "rgb(247, 221, 114)";
+       // ctxBezier.arc(p.x, p.y, 4, 0, Math.PI * 2, true);
+       // ctxBezier.fill();
+       // ctxBezier.stroke();
 
-       // ctxBezier.lineTo(p.x, p.y);
+       ctxBezier.lineTo(p.x, p.y);
     }
-    // ctxBezier.stroke();
+    ctxBezier.stroke();
     BEZIERCURVE.getCurve();
   }
 }

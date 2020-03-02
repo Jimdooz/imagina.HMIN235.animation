@@ -1,4 +1,5 @@
 
+
 /**
 * Apply a linear transformation to a position of the object path graphic
 */
@@ -57,7 +58,7 @@ let ANIMATION = {
         return bezier(bezierInterpolation(0, 1, result.percentage, curve.p1, curve.p2), p0, p1, p2, p3);
       }
       return new Vector2( bezierInterpolation(result.start.x, result.end.x, result.percentage, curve.p1, curve.p2),
-      bezierInterpolation(result.start.y, result.end.y, result.percentage, curve.p1, curve.p2));
+                          bezierInterpolation(result.start.y, result.end.y, result.percentage, curve.p1, curve.p2));
     }
     return new Vector2(linearInterpolation(result.start.x, result.end.x, result.percentage), linearInterpolation(result.start.y, result.end.y, result.percentage));
   },

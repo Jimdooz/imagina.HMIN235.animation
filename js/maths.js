@@ -98,7 +98,7 @@ function bezier(t, p0, p1, p2, p3){
   let x = (aX * Math.pow(t, 3)) + (bX * Math.pow(t, 2)) + (cX * t) + p0.x;
   let y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
 
-  return {x: x, y: y};
+  return { x, y };
 }
 
 /*********************************************************/
@@ -130,8 +130,18 @@ function bezierInterpolation(a, b, power, p1, p2){
   if(!p2) p2 = p1;
   let p0 = {x: 0, y: 0},
   p3 = {x: 1, y: 1};
-  // console.log(p1, p2);
-  power = bezier(power, p0, p1, p2, p3).y;
+
+  if(power === 1 || power === 0) return linearInterpolation(a, b, power);
+
+  //Get the bezier function x near power
+  for(let i = 0; i < 1; i += 0.01){
+    let r = bezier(i, p0, p1, p2, p3);
+    if(r.x >= power){
+      power = r.y;
+      break;
+    }
+  }
+
   return linearInterpolation(a, b, power);
 }
 
