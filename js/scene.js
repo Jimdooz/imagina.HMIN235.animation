@@ -20,17 +20,20 @@ const minArea = 7;
 /*********************************************************/
 /* MOUSE                                                 */
 /*********************************************************/
-let MOUSE = { x: 0, y: 0, down: false };
+let MOUSE = { x: 0, y: 0, screenX :0, screenY : 0, down: false };
 
 function getMousePos(canvas, evt) {
     let rect = canvas.getBoundingClientRect();
-    MOUSE.x = evt.clientX - rect.left;
-    MOUSE.y = evt.clientY - rect.top;
+    MOUSE.screenX = evt.clientX - rect.left;
+    MOUSE.screenY = evt.clientY - rect.top;
+    MOUSE.x = MOUSE.screenX - SCENE.position.x;
+    MOUSE.y = MOUSE.screenY - SCENE.position.y;
 }
 
 
 let SCENE = {
     objects: [],
+    position : new Vector2(0,0),
 }
 
 let mainMatrix = matrixScale(1); //Basic matrix
@@ -61,7 +64,7 @@ function draw(Time) {
         //Show center
         ctx.beginPath();
         ctx.fillStyle = "#ff0000";
-        ctx.arc(obj.position.x, obj.position.y, 2, 0, Math.PI * 2, true);
+        arc(obj.position.x, obj.position.y, 2, 0, Math.PI * 2, true);
         ctx.fill();
         //Draw shape
 
@@ -97,34 +100,34 @@ function draw(Time) {
                 //show Line p1 p0
                 ctx.strokeStyle = "rgba(100, 100, 100, 0.5)";
                 ctx.beginPath();
-                ctx.moveTo(p0.x, p0.y);
-                ctx.lineTo(p3.x, p3.y);
+                moveTo(p0.x, p0.y);
+                lineTo(p3.x, p3.y);
                 ctx.stroke();
 
                 //show Line p1 p0
                 ctx.beginPath();
                 ctx.strokeStyle = "rgba(247, 221, 114, 0.8)";
-                ctx.moveTo(p0.x, p0.y);
-                ctx.lineTo(p1.x, p1.y);
+                moveTo(p0.x, p0.y);
+                lineTo(p1.x, p1.y);
                 ctx.stroke();
 
                 //show Line p1 p0
                 ctx.beginPath();
-                ctx.moveTo(p2.x, p2.y);
-                ctx.lineTo(p3.x, p3.y);
+                moveTo(p2.x, p2.y);
+                lineTo(p3.x, p3.y);
                 ctx.stroke();
 
                 //Show P1
                 ctx.beginPath();
                 ctx.strokeStyle = "rgb(247, 221, 114)";
                 ctx.fillStyle = "rgb(247, 221, 114)";
-                ctx.arc(p1.x, p1.y, 4, 0, Math.PI * 2, true);
+                arc(p1.x, p1.y, 4, 0, Math.PI * 2, true);
                 ctx.fill();
                 ctx.stroke();
 
                 //Show p2
                 ctx.beginPath();
-                ctx.arc(p2.x, p2.y, 4, 0, Math.PI * 2, true);
+                arc(p2.x, p2.y, 4, 0, Math.PI * 2, true);
                 ctx.fill();
                 ctx.stroke();
 
@@ -132,10 +135,10 @@ function draw(Time) {
                 ctx.setLineDash([4, 2]);
 
                 ctx.beginPath();
-                ctx.moveTo(p0.x, p0.y);
+                moveTo(p0.x, p0.y);
                 for (let i = 0; i < 1; i += 0.01) {
                     let p = bezier(i, p0, p1, p2, p3);
-                    ctx.lineTo(p.x, p.y);
+                    lineTo(p.x, p.y);
                 }
                 ctx.stroke();
 
@@ -148,15 +151,16 @@ function draw(Time) {
         obj.position = ANIMATION.getCurrentPosition(objId, ANIMATION.currentFrame);
 
 
+        //OBJECT DRAW
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 2;
         ctx.beginPath();
         if (obj.shape && obj.shape.length > 0) {
             let pos = positionTransformation(obj, calculatedMatrix, 0);
-            ctx.moveTo(pos.x, pos.y);
+            moveTo(pos.x, pos.y);
             for (let i = 1; i < obj.shape.length; i++) {
                 pos = positionTransformation(obj, calculatedMatrix, i);
-                ctx.lineTo(pos.x, pos.y);
+                lineTo(pos.x, pos.y);
             }
             if (obj.closeShape) ctx.closePath();
             ctx.stroke();
@@ -166,7 +170,7 @@ function draw(Time) {
                 let pos = positionTransformation(obj, calculatedMatrix, i);
                 ctx.beginPath();
                 ctx.fillStyle = "#fff";
-                ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2, true);
+                arc(pos.x, pos.y, 2, 0, Math.PI * 2, true);
                 ctx.fill();
             }
         }
@@ -177,9 +181,21 @@ function draw(Time) {
         let pos = positionTransformation(obj, finalMatrix, POS_EDIT);
         ctx.beginPath();
         ctx.strokeStyle = distancePoint(MOUSE, pos) < minArea ? "rgb(100,100,100)" : "#ff0000";
-        ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2, true);
+        arc(pos.x, pos.y, 3, 0, Math.PI * 2, true);
         ctx.stroke();
     }
+}
+
+function moveTo(x, y){
+  ctx.moveTo(x + SCENE.position.x, y + SCENE.position.y);
+}
+
+function lineTo(x, y){
+  ctx.lineTo(x + SCENE.position.x, y + SCENE.position.y);
+}
+
+function arc(x, y, ...datas){
+  ctx.arc(x + SCENE.position.x, y + SCENE.position.y, 2, 0, Math.PI * 2, true);
 }
 
 let POS_EDIT = null;
@@ -231,56 +247,63 @@ canvas.addEventListener('mousemove', function(evt) {
     // ANIMATION.currentFrame = Math.round(MOUSE.x / ctx.canvas.width * ANIMATION.size);
 
 
-    //Edit position bezier curve
-    if (EDIT_KEYFRAME_START !== null && EDIT_P1_CURVE || EDIT_P2_CURVE) {
-        let startKey = ANIMATION.keyframe[EDIT_ID][EDIT_KEYFRAME_START];
-        let endKey = ANIMATION.keyframe[EDIT_ID][EDIT_KEYFRAME_END];
-        let frameStartAnimation = startKey.position.value;
-        let posEndAnimation = endKey.position.value;
-        if (!startKey.position.curvePosition) startKey.position.curvePosition = { p1: new Vector2(0, 0), p2: new Vector2(0, 0) };
-        if (EDIT_P1_CURVE) startKey.position.curvePosition.p1 = new Vector2(MOUSE.x - frameStartAnimation.x, MOUSE.y - frameStartAnimation.y);
-        else startKey.position.curvePosition.p2 = new Vector2(MOUSE.x - posEndAnimation.x, MOUSE.y - posEndAnimation.y);
-    } else {
-        if (POS_EDIT !== null) {
-            let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(finalMatrix));
-            if (MOUSE.down) obj.shape[POS_EDIT] = new Vector2(mouseTranspos.x, mouseTranspos.y);
-        } else {
-            POS_EDIT = getNear();
-        }
+    if(evt.buttons == 0 || evt.buttons == 1){
+      //Edit position bezier curve
+      if (EDIT_KEYFRAME_START !== null && EDIT_P1_CURVE || EDIT_P2_CURVE) {
+          let startKey = ANIMATION.keyframe[EDIT_ID][EDIT_KEYFRAME_START];
+          let endKey = ANIMATION.keyframe[EDIT_ID][EDIT_KEYFRAME_END];
+          let frameStartAnimation = startKey.position.value;
+          let posEndAnimation = endKey.position.value;
+          if (!startKey.position.curvePosition) startKey.position.curvePosition = { p1: new Vector2(0, 0), p2: new Vector2(0, 0) };
+          if (EDIT_P1_CURVE) startKey.position.curvePosition.p1 = new Vector2(MOUSE.x - frameStartAnimation.x, MOUSE.y - frameStartAnimation.y);
+          else startKey.position.curvePosition.p2 = new Vector2(MOUSE.x - posEndAnimation.x, MOUSE.y - posEndAnimation.y);
+      } else {
+          if (POS_EDIT !== null) {
+              let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(finalMatrix));
+              if (MOUSE.down) obj.shape[POS_EDIT] = new Vector2(mouseTranspos.x, mouseTranspos.y);
+          } else {
+              POS_EDIT = getNear();
+          }
+      }
+    }else if(evt.buttons == 4){
+      SCENE.position.x = SCENE.lastMovePosition.x + MOUSE.screenX;
+      SCENE.position.y = SCENE.lastMovePosition.y + MOUSE.screenY;
     }
 }, false);
 
 canvas.addEventListener('mousedown', function(evt) {
-    let obj = SCENE.objects[EDIT_ID];
-    let pos = null;
-    MOUSE.down = true;
+    getMousePos(canvas, evt);
+    if(evt.button == 0){
+      let obj = SCENE.objects[EDIT_ID];
+      let pos = null;
+      MOUSE.down = true;
 
-    let stop = false;
+      let stop = false;
 
-    POS_EDIT = getNear();
-    if (POS_EDIT !== null) pos = positionTransformation(obj, finalMatrix, POS_EDIT);
+      POS_EDIT = getNear();
+      if (POS_EDIT !== null) pos = positionTransformation(obj, finalMatrix, POS_EDIT);
 
-    if (POS_EDIT !== null && distancePoint(MOUSE, pos) < minArea) {
-        // obj.shape[POS_EDIT] = new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y);
-        stop = true;
+      if (POS_EDIT !== null && distancePoint(MOUSE, pos) < minArea) {
+          // obj.shape[POS_EDIT] = new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y);
+          stop = true;
+      }
+      if (EDIT_KEYFRAME_START !== null && POS_EDIT === null) {
+          if (distancePoint(MOUSE, EDIT_P1) < 8) {
+              EDIT_P1_CURVE = true;
+              stop = true;
+          } else if (distancePoint(MOUSE, EDIT_P2) < 8) {
+              EDIT_P2_CURVE = true;
+              stop = true;
+          }
+      }
+      if (!stop) {
+          let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(finalMatrix));
+          obj.shape.push(new Vector2(mouseTranspos.x, mouseTranspos.y));
+          POS_EDIT = obj.shape.length - 1;
+      }
+    }else if(evt.button == 1){
+      SCENE.lastMovePosition = new Vector2(SCENE.position.x - MOUSE.screenX, SCENE.position.y - MOUSE.screenY);
     }
-    if (EDIT_KEYFRAME_START !== null && POS_EDIT === null) {
-        if (distancePoint(MOUSE, EDIT_P1) < 8) {
-            EDIT_P1_CURVE = true;
-            stop = true;
-        } else if (distancePoint(MOUSE, EDIT_P2) < 8) {
-            EDIT_P2_CURVE = true;
-            stop = true;
-        }
-    }
-    if (!stop) {
-        let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(finalMatrix));
-        obj.shape.push(new Vector2(mouseTranspos.x, mouseTranspos.y));
-        POS_EDIT = obj.shape.length - 1;
-    }
-
-
-
 })
 
 window.addEventListener('mouseup', function(evt) {
