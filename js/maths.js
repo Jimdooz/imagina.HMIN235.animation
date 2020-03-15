@@ -32,11 +32,11 @@ class MinMaxVector2 {
   }
 
   addValue(vec2){
-    if(vec2.x < this.minPos.x) minPos.x = vec2.x;
-    if(vec2.y < this.minPos.y) minPos.y = vec2.y;
+    if(vec2.x < this.minPos.x) this.minPos.x = vec2.x;
+    if(vec2.y < this.minPos.y) this.minPos.y = vec2.y;
 
-    if(vec2.x > this.maxPos.x) maxPos.x = vec2.x;
-    if(vec2.y > this.maxPos.y) maxPos.y = vec2.y;
+    if(vec2.x > this.maxPos.x) this.maxPos.x = vec2.x;
+    if(vec2.y > this.maxPos.y) this.maxPos.y = vec2.y;
   }
 }
 

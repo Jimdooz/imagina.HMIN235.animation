@@ -158,9 +158,11 @@ function draw(Time) {
         let borderPos = new MinMaxVector2();
         if (obj.shape && obj.shape.length > 0) {
             let pos = positionTransformation(obj, calculatedMatrix, 0);
+            borderPos.addValue(new Vector2(pos.rel_x, pos.rel_y));
             moveTo(pos.x, pos.y);
             for (let i = 1; i < obj.shape.length; i++) {
                 pos = positionTransformation(obj, calculatedMatrix, i);
+                borderPos.addValue(new Vector2(pos.rel_x, pos.rel_y));
                 lineTo(pos.x, pos.y);
             }
             if (obj.closeShape) ctx.closePath();
@@ -179,11 +181,20 @@ function draw(Time) {
             //Show box
             if (objId == EDIT_ID){
               ctx.beginPath();
-              moveTo(borderPos.minPos.x, borderPos.minPos.y);
-              lineTo(borderPos.maxPos.x, borderPos.minPos.y);
-              lineTo(borderPos.maxPos.x, borderPos.maxPos.y);
-              lineTo(borderPos.minPos.x, borderPos.maxPos.y);
+              moveTo(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
+              lineTo(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
+              lineTo(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
+              lineTo(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
+              ctx.closePath();
+              ctx.strokeStyle = "#5380c3";
+              ctx.fillStyle = "#5380c3";
+              ctx.setLineDash([5, 5]);
               ctx.stroke();
+              ctx.setLineDash([4, 0]);
+              ctx.beginPath();arc(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
+              ctx.beginPath();arc(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
+              ctx.beginPath();arc(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
+              ctx.beginPath();arc(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
             }
         }
     }
@@ -207,7 +218,7 @@ function lineTo(x, y){
 }
 
 function arc(x, y, ...datas){
-  ctx.arc(x + SCENE.position.x, y + SCENE.position.y, 2, 0, Math.PI * 2, true);
+  ctx.arc(x + SCENE.position.x, y + SCENE.position.y, ...datas);
 }
 
 let POS_EDIT = null;
@@ -293,12 +304,14 @@ canvas.addEventListener('mousedown', function(evt) {
       let stop = false;
 
       POS_EDIT = getNear();
+
       if (POS_EDIT !== null) pos = positionTransformation(obj, finalMatrix, POS_EDIT);
 
       if (POS_EDIT !== null && distancePoint(MOUSE, pos) < minArea) {
           // obj.shape[POS_EDIT] = new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y);
           stop = true;
       }
+
       if (EDIT_KEYFRAME_START !== null && POS_EDIT === null) {
           if (distancePoint(MOUSE, EDIT_P1) < 8) {
               EDIT_P1_CURVE = true;
@@ -308,6 +321,7 @@ canvas.addEventListener('mousedown', function(evt) {
               stop = true;
           }
       }
+
       if (!stop) {
           let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(finalMatrix));
           obj.shape.push(new Vector2(mouseTranspos.x, mouseTranspos.y));
@@ -406,7 +420,7 @@ ANIMATION.keyframe[EDIT_ID] = {
             value: Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
         },
         position: {
-            value: new Vector2(600, 600),
+            value: new Vector2(400, 400),
         },
         color: {
             value: new Color(255, 255, 255, 1)
