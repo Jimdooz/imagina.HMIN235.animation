@@ -155,6 +155,7 @@ function draw(Time) {
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 2;
         ctx.beginPath();
+        let borderPos = new MinMaxVector2();
         if (obj.shape && obj.shape.length > 0) {
             let pos = positionTransformation(obj, calculatedMatrix, 0);
             moveTo(pos.x, pos.y);
@@ -167,12 +168,22 @@ function draw(Time) {
             let color = ANIMATION.getCurrentPosition
             ctx.fillStyle = "rgba(" + obj.color.a + "," + obj.color.g + "," + obj.color.b + "," + obj.color.a + ")";
             ctx.fill();
+            //Draw points
             for (let i = 0; i < obj.shape.length; i++) {
                 let pos = positionTransformation(obj, calculatedMatrix, i);
                 ctx.beginPath();
                 ctx.fillStyle = "#fff";
                 arc(pos.x, pos.y, 2, 0, Math.PI * 2, true);
                 ctx.fill();
+            }
+            //Show box
+            if (objId == EDIT_ID){
+              ctx.beginPath();
+              moveTo(borderPos.minPos.x, borderPos.minPos.y);
+              lineTo(borderPos.maxPos.x, borderPos.minPos.y);
+              lineTo(borderPos.maxPos.x, borderPos.maxPos.y);
+              lineTo(borderPos.minPos.x, borderPos.maxPos.y);
+              ctx.stroke();
             }
         }
     }

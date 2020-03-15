@@ -201,7 +201,7 @@ window.addEventListener('mouseup', function(e) {
 });
 
 function getPercentageTime(){
-  let p = (MOUSE.x - TIMELINE.layerObjectSize - TIMELINE.timeLineSpace) / (ctxTimeline.canvas.width - TIMELINE.layerObjectSize) * (ANIMATION.size + 1);
+  let p = (MOUSE.screenX - TIMELINE.layerObjectSize - TIMELINE.timeLineSpace) / (ctxTimeline.canvas.width - TIMELINE.layerObjectSize) * (ANIMATION.size + 1);
   return p <= 0 ? 0 : p > ANIMATION.size - 1 ? ANIMATION.size - 1 : p;
 }
 
@@ -223,7 +223,7 @@ function drawKeyFrame(ctx, x, y, color = "#fcbf31", size = 12, onDrag = () => {}
   ctx.stroke();
 
   TIMELINE.keyframesEvent.push({
-    test : () => { return distancePoint(MOUSE, new Vector2(x, y)) < size / 2; },
+    test : () => { return distancePoint(new Vector2(MOUSE.screenX, MOUSE.screenY), new Vector2(x, y)) < size / 2; },
     action : onDrag,
     actionClick : onClick,
   })

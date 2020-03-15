@@ -25,6 +25,21 @@ function distancePoint(a, b) {
   return Math.sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)));
 }
 
+class MinMaxVector2 {
+  constructor() {
+    this.minPos = new Vector2(Number.MAX_SAFE_INTEGER , Number.MAX_SAFE_INTEGER);
+    this.maxPos = new Vector2(0 , 0);
+  }
+
+  addValue(vec2){
+    if(vec2.x < this.minPos.x) minPos.x = vec2.x;
+    if(vec2.y < this.minPos.y) minPos.y = vec2.y;
+
+    if(vec2.x > this.maxPos.x) maxPos.x = vec2.x;
+    if(vec2.y > this.maxPos.y) maxPos.y = vec2.y;
+  }
+}
+
 
 /*********************************************************/
 /* MATRIXS                                               */

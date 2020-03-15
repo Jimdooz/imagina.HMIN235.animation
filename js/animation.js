@@ -4,6 +4,8 @@
 function positionTransformation(obj, matrix2, index) {
     let pos = new Vector2(obj.shape[index].x, obj.shape[index].y);
     pos = linearTransformation(pos, matrix2);
+    pos.rel_x = pos.x;
+    pos.rel_y = pos.y;
     pos.x += obj.position.x;
     pos.y += obj.position.y;
     return pos;
