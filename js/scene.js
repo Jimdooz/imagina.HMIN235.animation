@@ -146,7 +146,7 @@ function draw(Time) {
             // ctx.stroke();
         }
         obj.position = ANIMATION.getCurrentPosition(objId, ANIMATION.currentFrame);
-
+        obj.color = ANIMATION.getCurrentColor(objId, ANIMATION.currentFrame);
 
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 2;
@@ -160,7 +160,8 @@ function draw(Time) {
             }
             if (obj.closeShape) ctx.closePath();
             ctx.stroke();
-            ctx.fillStyle = "rgba(" + (objId == EDIT_ID ? 0 : 255) + "," + (objId == EDIT_ID ? 255 : 0) + ",0,0.5)";
+            let color = ANIMATION.getCurrentPosition
+            ctx.fillStyle = "rgba(" + obj.color.a + "," + obj.color.g + "," + obj.color.b + "," + obj.color.a + ")";
             ctx.fill();
             for (let i = 0; i < obj.shape.length; i++) {
                 let pos = positionTransformation(obj, calculatedMatrix, i);
@@ -289,13 +290,14 @@ window.addEventListener('mouseup', function(evt) {
     EDIT_P2_CURVE = false;
 })
 
-function createObjectScene(position, name) {
+function createObjectScene(position, name, color) {
     let uid = uniqueID();
     SCENE.objects[uid] = {
         position: new Vector2(position.x, position.y),
         shape: [],
         closeShape: true,
         name: name,
+        color: color,
     };
 
     let objectElement = document.createElement("div");
@@ -318,7 +320,7 @@ let EDIT_P2 = null;
 let EDIT_P1_CURVE = false;
 let EDIT_P2_CURVE = false;
 
-let EDIT_ID = createObjectScene(new Vector2(200, 200), "First Object");
+let EDIT_ID = createObjectScene(new Vector2(200, 200), "First Object", new Color(0, 255, 0, 0.5));
 SCENE.objects[EDIT_ID].shape.push(new Vector2(27, -44));
 SCENE.objects[EDIT_ID].shape.push(new Vector2(-55, 13));
 SCENE.objects[EDIT_ID].shape.push(new Vector2(-5, 58));
@@ -345,15 +347,18 @@ position,
 
 ANIMATION.keyframe[EDIT_ID] = {
     0: {
-        // matrix : {
-        //   value : matrixScale(1),
-        //   // curve : {
-        //   //   p1 : {x: 1, y: 0},
-        //   //   p2 : {x: 0, y: 1},
-        //   // }
-        // },
+        matrix: {
+            value: matrixScale(1),
+            // curve : {
+            //   p1 : {x: 1, y: 0},
+            //   p2 : {x: 0, y: 1},
+            // }
+        },
         position: {
             value: new Vector2(200, 200),
+        },
+        color: {
+            value: new Color(0, 0, 0, 0.5)
         }
 
     },
@@ -363,17 +368,20 @@ ANIMATION.keyframe[EDIT_ID] = {
     //   }
     // },
     20: {
-        // matrix : {
-        //   value : Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
-        // },
+        matrix: {
+            value: Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
+        },
         position: {
             value: new Vector2(600, 600),
+        },
+        color: {
+            value: new Color(255, 255, 255, 1)
         }
     },
     30: {
         position: {
             value: new Vector2(1200, 300),
-        }
+        },
     }
 }
 
