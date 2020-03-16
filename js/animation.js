@@ -27,12 +27,12 @@ let ANIMATION = {
         return ANIMATION.existKey(objId, frame, keyName) && ANIMATION.keyframe[objId][frame][keyName].curve;
     },
 
-    setValue(objId, frame, keyName, value){
-      if(!ANIMATION.keyframe[objId]) ANIMATION.keyframe[objId] = {};
-      if(!ANIMATION.keyframe[objId][frame]) ANIMATION.keyframe[objId][frame] = {};
-      if(!ANIMATION.keyframe[objId][frame][keyName]) ANIMATION.keyframe[objId][frame][keyName] = {};
-      ANIMATION.keyframe[objId][frame][keyName].value = value;
-      TIMELINE.updateGraphics(ANIMATION);
+    setValue(objId, frame, keyName, value) {
+        if (!ANIMATION.keyframe[objId]) ANIMATION.keyframe[objId] = {};
+        if (!ANIMATION.keyframe[objId][frame]) ANIMATION.keyframe[objId][frame] = {};
+        if (!ANIMATION.keyframe[objId][frame][keyName]) ANIMATION.keyframe[objId][frame][keyName] = {};
+        ANIMATION.keyframe[objId][frame][keyName].value = value;
+        TIMELINE.updateGraphics(ANIMATION);
     },
 
     setFrame(frame, changeTime = true) {
@@ -80,7 +80,7 @@ let ANIMATION = {
         if (!ANIMATION.keyframe[id]) return SCENE.objects[id].color; //Not found
         let result = ANIMATION.getTypeBetween(id, frame, "color", SCENE.objects[id].color, SCENE.objects[id].color);
         if (ANIMATION.existCurve(id, result.frameStart, "color")) {
-            let curve = ANIMATION.keyframe[id][result.frameStart]["matrix"].curve;
+            let curve = ANIMATION.keyframe[id][result.frameStart]["color"].curve;
             return new Color(
                 bezierInterpolation(result.start.r, result.end.r, result.percentage, curve.p1, curve.p2),
                 bezierInterpolation(result.start.g, result.end.g, result.percentage, curve.p1, curve.p2),
