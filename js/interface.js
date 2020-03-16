@@ -52,8 +52,5 @@ const picker = new iro.ColorPicker('#picker', {
 picker.on("color:change", onColorChange);
 
 function onColorChange(color) {
-    if (!ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame]) {
-        ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame] = { color: {} };
-    }
-    ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame].color.value = color.rgba;
+    ANIMATION.setValue(SCENE.EDIT_ID, ANIMATION.currentFrame, "color", color.rgba);
 }
