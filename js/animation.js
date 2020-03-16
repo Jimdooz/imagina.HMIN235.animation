@@ -27,6 +27,14 @@ let ANIMATION = {
         return ANIMATION.existKey(objId, frame, keyName) && ANIMATION.keyframe[objId][frame][keyName].curve;
     },
 
+    setValue(objId, frame, keyName, value){
+      if(!ANIMATION.keyframe[objId]) ANIMATION.keyframe[objId] = {};
+      if(!ANIMATION.keyframe[objId][frame]) ANIMATION.keyframe[objId][frame] = {};
+      if(!ANIMATION.keyframe[objId][frame][keyName]) ANIMATION.keyframe[objId][frame][keyName] = {};
+      ANIMATION.keyframe[objId][frame][keyName].value = value;
+      TIMELINE.updateGraphics(ANIMATION);
+    },
+
     setFrame(frame, changeTime = true) {
         frame = frame < 0 ? 0 : frame > ANIMATION.size - 1 ? ANIMATION.size - 1 : frame;
         let posRect = Math.floor(frame);
