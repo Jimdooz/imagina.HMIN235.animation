@@ -434,7 +434,7 @@ SCENE.objects[obj1].shape.push(new Vector2(-50, -50));
 SCENE.objects[obj1].shape.push(new Vector2(-50, 50));
 SCENE.objects[obj1].shape.push(new Vector2(50, 50));
 
-SCENE.EDIT_ID = createObjectScene(new Vector2(200, 200), "First Object", new Color(0, 255, 0, 0.5));
+SCENE.EDIT_ID = createObjectScene(new Vector2(200, 200), "Second Object", new Color(0, 255, 0, 0.5));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(27, -44));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(-55, 13));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(-5, 58));
@@ -496,6 +496,212 @@ ANIMATION.keyframe[SCENE.EDIT_ID] = {
         position: {
             value: new Vector2(1200, 300),
         },
+    }
+}
+ANIMATION.keyframe[obj1] = {
+    0: {
+        position: {
+            value: {
+                x: 176,
+                y: -41
+            },
+            curvePosition: {
+                p1: {
+                    x: 109,
+                    y: -6
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            },
+            curve: {
+                p1: {
+                    x: 0,
+                    y: 0
+                },
+                p2: {
+                    x: 0.9454545454545454,
+                    y: 0.050000000000000044
+                }
+            }
+        }
+    },
+    9: {
+        position: {
+            value: {
+                x: 388,
+                y: 432
+            },
+            curvePosition: {
+                p1: {
+                    x: 101,
+                    y: -335
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            },
+            curve: {
+                p1: {
+                    x: 0.02727272727272727,
+                    y: 0.19090909090909092
+                },
+                p2: {
+                    x: 0.9181818181818182,
+                    y: 0.6545454545454545
+                }
+            }
+        }
+    },
+    15: {
+        position: {
+            value: {
+                x: 575,
+                y: 107
+            },
+            curvePosition: {
+                p1: {
+                    x: 71,
+                    y: -5
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            },
+            curve: {
+                p1: {
+                    x: 0.25,
+                    y: 0.03181818181818186
+                },
+                p2: {
+                    x: 1,
+                    y: 1
+                }
+            }
+        }
+    },
+    19: {
+        position: {
+            value: {
+                x: 724,
+                y: 487
+            },
+            curve: {
+                p1: {
+                    x: 0,
+                    y: 0
+                },
+                p2: {
+                    x: 1,
+                    y: 1
+                }
+            },
+            curvePosition: {
+                p1: {
+                    x: 5,
+                    y: -33
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            }
+        }
+    },
+    22: {
+        position: {
+            value: {
+                x: 767,
+                y: 448
+            },
+            curve: {
+                p1: {
+                    x: 0,
+                    y: 0
+                },
+                p2: {
+                    x: 1,
+                    y: 1
+                }
+            },
+            curvePosition: {
+                p1: {
+                    x: 36,
+                    y: 0
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            }
+        }
+    },
+    24: {
+        position: {
+            value: {
+                x: 838,
+                y: 460
+            },
+            curve: {
+                p1: {
+                    x: 0.6727272727272727,
+                    y: 0.6636363636363636
+                },
+                p2: {
+                    x: 0.6227272727272727,
+                    y: 0.95
+                }
+            },
+            curvePosition: {
+                p1: {
+                    x: 8,
+                    y: -7
+                },
+                p2: {
+                    x: 0,
+                    y: 0
+                }
+            }
+        }
+    },
+    26: {
+        position: {
+            value: {
+                x: 903,
+                y: 451
+            },
+            curve: {
+                p1: {
+                    x: 0,
+                    y: 0
+                },
+                p2: {
+                    x: 1,
+                    y: 1
+                }
+            }
+        }
+    },
+    34: {
+        position: {
+            value: {
+                x: 1008,
+                y: 448
+            },
+            curve: {
+                p1: {
+                    x: 0,
+                    y: 0
+                },
+                p2: {
+                    x: 1,
+                    y: 1
+                }
+            }
+        }
     }
 }
 
