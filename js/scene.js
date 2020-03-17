@@ -20,7 +20,7 @@ const minArea = 7;
 /*********************************************************/
 /* MOUSE                                                 */
 /*********************************************************/
-let MOUSE = { x: 0, y: 0, screenX :0, screenY : 0, down: false };
+let MOUSE = { x: 0, y: 0, screenX: 0, screenY: 0, down: false };
 
 function getMousePos(canvas, evt) {
     let rect = canvas.getBoundingClientRect();
@@ -32,29 +32,27 @@ function getMousePos(canvas, evt) {
 
 let SCENE = {
     objects: [],
-    position : new Vector2(0,0),
-    EDIT_ID : 0, //Represente l'object courrament selectionné
-    SHAPE_EDIT : null, //Represente le point selectionné de la forme courrament selectionné
-    selectedOptions : {
-      EDIT_KEYFRAME_START : null, //Represente la position de la keyframe précédente
-      EDIT_KEYFRAME_END : null, //Represente la position de la keyfram suivante
-      bezierPosition : { //Represente les différents points de la courbe de Bézier dans l'espace
-        p0 : null,
-        p1 : null,
-        p2 : null,
-        p3 : null,
-      },
-      matrix : { //Represente la matrix appliqué visuellement sur l'object selectionné
-        mainMatrix : matrixScale(1),
-        rotateMatrix : matrixRotation(0),
-        currentMatrix : Matrix.dotProduct(matrixRotation(0), matrixScale(1)),
-      }
+    position: new Vector2(0, 0),
+    EDIT_ID: 0, //Represente l'object courrament selectionné
+    SHAPE_EDIT: null, //Represente le point selectionné de la forme courrament selectionné
+    selectedOptions: {
+        EDIT_KEYFRAME_START: null, //Represente la position de la keyframe précédente
+        EDIT_KEYFRAME_END: null, //Represente la position de la keyfram suivante
+        bezierPosition: { //Represente les différents points de la courbe de Bézier dans l'espace
+            p0: null,
+            p1: null,
+            p2: null,
+            p3: null,
+        },
+        matrix: { //Represente la matrix appliqué visuellement sur l'object selectionné
+            currentMatrix: Matrix.product(matrixRotation(0), matrixScale(1)),
+        }
     },
-    resetSelectedOptions(){
-      SCENE.selectedOptions.EDIT_KEYFRAME_START = null;
-      SCENE.selectedOptions.EDIT_KEYFRAME_END = null;
-      SCENE.selectedOptions.bezierPosition = { p0 : null, p1 : null, p2 : null, p3 : null, };
-      SCENE.selectedOptions.matrix = { mainMatrix : matrixScale(1), rotateMatrix : matrixRotation(0), currentMatrix : Matrix.dotProduct(matrixRotation(0), matrixScale(1)) };
+    resetSelectedOptions() {
+        SCENE.selectedOptions.EDIT_KEYFRAME_START = null;
+        SCENE.selectedOptions.EDIT_KEYFRAME_END = null;
+        SCENE.selectedOptions.bezierPosition = { p0: null, p1: null, p2: null, p3: null, };
+        SCENE.selectedOptions.matrix = { currentMatrix: Matrix.product(matrixRotation(0), matrixScale(1)) };
     }
 }
 
@@ -92,7 +90,7 @@ function draw(Time) {
         // SCENE.selectedOptions.bezierPosition.p0 = null;
         // SCENE.selectedOptions.bezierPosition.p3 = null;
 
-         if (objId == SCENE.EDIT_ID && EDIT_MODE == "trajectory") {
+        if (objId == SCENE.EDIT_ID && EDIT_MODE == "trajectory") {
             SCENE.selectedOptions.matrix.currentMatrix = calculatedMatrix;
             let resultPosition = ANIMATION.getTypeBetween(objId, ANIMATION.currentFrame, "position", SCENE.objects[objId].position, SCENE.objects[objId].position);
             if (resultPosition.start !== null) {
@@ -198,22 +196,30 @@ function draw(Time) {
                 ctx.fill();
             }
             //Show box
-            if (objId == SCENE.EDIT_ID){
-              ctx.beginPath();
-              moveTo(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
-              lineTo(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
-              lineTo(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
-              lineTo(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
-              ctx.closePath();
-              ctx.strokeStyle = "#5380c3";
-              ctx.fillStyle = "#5380c3";
-              ctx.setLineDash([5, 5]);
-              ctx.stroke();
-              ctx.setLineDash([4, 0]);
-              ctx.beginPath();arc(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
-              ctx.beginPath();arc(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
-              ctx.beginPath();arc(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
-              ctx.beginPath();arc(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true); ctx.fill();
+            if (objId == SCENE.EDIT_ID) {
+                ctx.beginPath();
+                moveTo(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
+                lineTo(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y);
+                lineTo(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
+                lineTo(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y);
+                ctx.closePath();
+                ctx.strokeStyle = "#5380c3";
+                ctx.fillStyle = "#5380c3";
+                ctx.setLineDash([5, 5]);
+                ctx.stroke();
+                ctx.setLineDash([4, 0]);
+                ctx.beginPath();
+                arc(borderPos.minPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
+                ctx.beginPath();
+                arc(borderPos.maxPos.x + obj.position.x, borderPos.minPos.y + obj.position.y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
+                ctx.beginPath();
+                arc(borderPos.maxPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
+                ctx.beginPath();
+                arc(borderPos.minPos.x + obj.position.x, borderPos.maxPos.y + obj.position.y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
             }
         }
     }
@@ -228,16 +234,16 @@ function draw(Time) {
     }
 }
 
-function moveTo(x, y){
-  ctx.moveTo(x + SCENE.position.x, y + SCENE.position.y);
+function moveTo(x, y) {
+    ctx.moveTo(x + SCENE.position.x, y + SCENE.position.y);
 }
 
-function lineTo(x, y){
-  ctx.lineTo(x + SCENE.position.x, y + SCENE.position.y);
+function lineTo(x, y) {
+    ctx.lineTo(x + SCENE.position.x, y + SCENE.position.y);
 }
 
-function arc(x, y, ...datas){
-  ctx.arc(x + SCENE.position.x, y + SCENE.position.y, ...datas);
+function arc(x, y, ...datas) {
+    ctx.arc(x + SCENE.position.x, y + SCENE.position.y, ...datas);
 }
 
 /**
@@ -290,29 +296,29 @@ canvas.addEventListener('mousemove', function(evt) {
     // ANIMATION.currentFrame = Math.round(MOUSE.x / ctx.canvas.width * ANIMATION.size);
 
 
-    if(evt.buttons == 0 || evt.buttons == 1){
-      console.log(SCENE.selectedOptions.EDIT_KEYFRAME_START, SCENE.selectedOptions.bezierPosition.p1, SCENE.selectedOptions.bezierPosition.p2);
-      //Edit position bezier curve
-      if(EDIT_MODE == "move" && MOUSE.down) moveTool();
-      else if (SCENE.selectedOptions.EDIT_KEYFRAME_START !== null && SCENE.selectedOptions.bezierPosition.p1 || SCENE.selectedOptions.bezierPosition.p2 && EDIT_MODE == "trajectory") {
-          let startKey = ANIMATION.keyframe[SCENE.EDIT_ID][SCENE.selectedOptions.EDIT_KEYFRAME_START];
-          let endKey = ANIMATION.keyframe[SCENE.EDIT_ID][SCENE.selectedOptions.EDIT_KEYFRAME_END];
-          let frameStartAnimation = startKey.position.value;
-          let posEndAnimation = endKey.position.value;
-          if (!startKey.position.curvePosition) startKey.position.curvePosition = { p1: new Vector2(0, 0), p2: new Vector2(0, 0) };
-          if (SCENE.selectedOptions.bezierPosition.p1) startKey.position.curvePosition.p1 = new Vector2(MOUSE.x - frameStartAnimation.x, MOUSE.y - frameStartAnimation.y);
-          else startKey.position.curvePosition.p2 = new Vector2(MOUSE.x - posEndAnimation.x, MOUSE.y - posEndAnimation.y);
-      } else if(EDIT_MODE == "edit") {
-          if (SCENE.SHAPE_EDIT !== null) {
-              let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(SCENE.selectedOptions.matrix.currentMatrix));
-              if (MOUSE.down) obj.shape[SCENE.SHAPE_EDIT] = new Vector2(mouseTranspos.x, mouseTranspos.y);
-          } else {
-              SCENE.SHAPE_EDIT = getNear();
-          }
-      }
-    }else if(evt.buttons == 4){
-      SCENE.position.x = SCENE.lastMovePosition.x + MOUSE.screenX;
-      SCENE.position.y = SCENE.lastMovePosition.y + MOUSE.screenY;
+    if (evt.buttons == 0 || evt.buttons == 1) {
+        console.log(SCENE.selectedOptions.EDIT_KEYFRAME_START, SCENE.selectedOptions.bezierPosition.p1, SCENE.selectedOptions.bezierPosition.p2);
+        //Edit position bezier curve
+        if (EDIT_MODE == "move" && MOUSE.down) moveTool();
+        else if (SCENE.selectedOptions.EDIT_KEYFRAME_START !== null && SCENE.selectedOptions.bezierPosition.p1 || SCENE.selectedOptions.bezierPosition.p2 && EDIT_MODE == "trajectory") {
+            let startKey = ANIMATION.keyframe[SCENE.EDIT_ID][SCENE.selectedOptions.EDIT_KEYFRAME_START];
+            let endKey = ANIMATION.keyframe[SCENE.EDIT_ID][SCENE.selectedOptions.EDIT_KEYFRAME_END];
+            let frameStartAnimation = startKey.position.value;
+            let posEndAnimation = endKey.position.value;
+            if (!startKey.position.curvePosition) startKey.position.curvePosition = { p1: new Vector2(0, 0), p2: new Vector2(0, 0) };
+            if (SCENE.selectedOptions.bezierPosition.p1) startKey.position.curvePosition.p1 = new Vector2(MOUSE.x - frameStartAnimation.x, MOUSE.y - frameStartAnimation.y);
+            else startKey.position.curvePosition.p2 = new Vector2(MOUSE.x - posEndAnimation.x, MOUSE.y - posEndAnimation.y);
+        } else if (EDIT_MODE == "edit") {
+            if (SCENE.SHAPE_EDIT !== null) {
+                let mouseTranspos = linearTransformation(new Vector2(MOUSE.x - obj.position.x, MOUSE.y - obj.position.y), Matrix.invert(SCENE.selectedOptions.matrix.currentMatrix));
+                if (MOUSE.down) obj.shape[SCENE.SHAPE_EDIT] = new Vector2(mouseTranspos.x, mouseTranspos.y);
+            } else {
+                SCENE.SHAPE_EDIT = getNear();
+            }
+        }
+    } else if (evt.buttons == 4) {
+        SCENE.position.x = SCENE.lastMovePosition.x + MOUSE.screenX;
+        SCENE.position.y = SCENE.lastMovePosition.y + MOUSE.screenY;
     }
 }, false);
 
@@ -321,66 +327,75 @@ canvas.addEventListener('mousedown', function(evt) {
     MOUSE.down = true; //On active le fait que la souris appuie
 
     //On veux effectuer une action
-    if(evt.button == 0){
-      let obj = SCENE.objects[SCENE.EDIT_ID];
-      if(EDIT_MODE == "move") moveTool();
-      else if(EDIT_MODE == "scale ") scaleTool();
-      else if(EDIT_MODE == "rotate ") rotateTool();
-      else if(EDIT_MODE == "edit") editTool();
-      else if(EDIT_MODE == "trajectory") trajectoryTool();
+    if (evt.button == 0) {
+        let obj = SCENE.objects[SCENE.EDIT_ID];
+        if (EDIT_MODE == "move") moveTool();
+        else if (EDIT_MODE == "scale ") scaleTool();
+        else if (EDIT_MODE == "rotate ") rotateTool();
+        else if (EDIT_MODE == "edit") editTool();
+        else if (EDIT_MODE == "trajectory") trajectoryTool();
     }
     //On se déplace dans l'espace
-    else if(evt.button == 1){
-      SCENE.lastMovePosition = new Vector2(SCENE.position.x - MOUSE.screenX, SCENE.position.y - MOUSE.screenY);
+    else if (evt.button == 1) {
+        SCENE.lastMovePosition = new Vector2(SCENE.position.x - MOUSE.screenX, SCENE.position.y - MOUSE.screenY);
     }
 })
+canvas.addEventListener('wheel', function(e) {
+    if (EDIT_MODE == "rotate") {
+        let mtx = ANIMATION.getCurrentMatrix(SCENE.EDIT_ID, ANIMATION.currentFrame);
+        let rotatevalue = e.deltaY / 1000;
+        mtx = Matrix.product(mtx, matrixRotation(rotatevalue));
+        ANIMATION.setValue(SCENE.EDIT_ID, ANIMATION.currentFrame, "matrix", mtx);
+    } else if (EDIT_MODE == "scale") {
+        let mtx = ANIMATION.getCurrentMatrix(SCENE.EDIT_ID, ANIMATION.currentFrame);
+        let scalevalue = 1 + e.deltaY / 1000;
+        mtx = Matrix.product(mtx, matrixScale(scalevalue));
+        ANIMATION.setValue(SCENE.EDIT_ID, ANIMATION.currentFrame, "matrix", mtx);
+    }
+}, { passive: true });
 
-function moveTool(){
-  ANIMATION.setValue(SCENE.EDIT_ID, ANIMATION.currentFrame, "position", new Vector2(MOUSE.x, MOUSE.y));
-  if(!ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame]) ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame] = {};
-  ANIMATION.keyframe[SCENE.EDIT_ID][ANIMATION.currentFrame].position = {
-      value: new Vector2(MOUSE.x, MOUSE.y),
-  };
+function moveTool() {
+    ANIMATION.setValue(SCENE.EDIT_ID, ANIMATION.currentFrame, "position", new Vector2(MOUSE.x, MOUSE.y));
 }
 
-function scaleTool(){
+function scaleTool() {
 
 }
 
-function rotateTool(){
+function rotateTool() {
 
 }
 
-function editTool(){
-  let obj = SCENE.objects[SCENE.EDIT_ID];
-  SCENE.SHAPE_EDIT = getNear();
+function editTool() {
+    let obj = SCENE.objects[SCENE.EDIT_ID];
+    SCENE.SHAPE_EDIT = getNear();
 
-  if (SCENE.SHAPE_EDIT !== null){
-    let positionCornerSelected = positionTransformation(obj, SCENE.selectedOptions.matrix.currentMatrix, SCENE.SHAPE_EDIT);
-  }else{
-    addNewCornerShape(MOUSE);
-  }
+    if (SCENE.SHAPE_EDIT !== null) {
+        let positionCornerSelected = positionTransformation(obj, SCENE.selectedOptions.matrix.currentMatrix, SCENE.SHAPE_EDIT);
+    } else {
+        addNewCornerShape(MOUSE);
+    }
 }
 
-function trajectoryTool(){
-  console.log(">>", SCENE.selectedOptions.EDIT_KEYFRAME_START);
-  if (SCENE.selectedOptions.EDIT_KEYFRAME_START !== null) {
-      console.log(new Vector2(MOUSE.x, MOUSE.y, SCENE.selectedOptions.bezierPosition.p0, SCENE.selectedOptions.bezierPosition.p3));
-      if (distancePoint(MOUSE, SCENE.selectedOptions.bezierPosition.p0) < 8) {
-          SCENE.selectedOptions.bezierPosition.p1 = true;
-      } else if (distancePoint(MOUSE, SCENE.selectedOptions.bezierPosition.p3) < 8) {
-          SCENE.selectedOptions.bezierPosition.p2 = true;
-      }
-  }
+function trajectoryTool() {
+    console.log(">>", SCENE.selectedOptions.EDIT_KEYFRAME_START);
+    if (SCENE.selectedOptions.EDIT_KEYFRAME_START !== null) {
+        console.log(new Vector2(MOUSE.x, MOUSE.y, SCENE.selectedOptions.bezierPosition.p0, SCENE.selectedOptions.bezierPosition.p3));
+        if (distancePoint(MOUSE, SCENE.selectedOptions.bezierPosition.p0) < 8) {
+            SCENE.selectedOptions.bezierPosition.p1 = true;
+        } else if (distancePoint(MOUSE, SCENE.selectedOptions.bezierPosition.p3) < 8) {
+            SCENE.selectedOptions.bezierPosition.p2 = true;
+        }
+    }
 }
 
-function addNewCornerShape(point){
-  let obj = SCENE.objects[SCENE.EDIT_ID];
-  if(obj){
-    let mouseTranspos = linearTransformation(new Vector2(point.x - obj.position.x, point.y - obj.position.y), Matrix.invert(SCENE.selectedOptions.matrix.currentMatrix));
-    obj.shape.push(new Vector2(mouseTranspos.x, mouseTranspos.y));
-    SCENE.SHAPE_EDIT = obj.shape.length - 1;
-  }
+function addNewCornerShape(point) {
+    let obj = SCENE.objects[SCENE.EDIT_ID];
+    if (obj) {
+        let mouseTranspos = linearTransformation(new Vector2(point.x - obj.position.x, point.y - obj.position.y), Matrix.invert(SCENE.selectedOptions.matrix.currentMatrix));
+        obj.shape.push(new Vector2(mouseTranspos.x, mouseTranspos.y));
+        SCENE.SHAPE_EDIT = obj.shape.length - 1;
+    }
 }
 
 window.addEventListener('mouseup', function(evt) {
@@ -468,7 +483,7 @@ ANIMATION.keyframe[SCENE.EDIT_ID] = {
     // },
     20: {
         matrix: {
-            value: Matrix.dotProduct(matrixScale(3), matrixRotation(45)),
+            value: Matrix.product(matrixScale(3), matrixRotation(45)),
         },
         position: {
             value: new Vector2(400, 400),
