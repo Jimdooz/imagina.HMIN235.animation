@@ -21,9 +21,17 @@
         </div>
         <canvas id="SCENE" class="flex1"></canvas>
         <div class="-flexCStart -align-ifill -width-very-long overflow-v">
-            <div class="-flexCStart -align-ifill" id="OBJECTS"></div>
-            <canvas id="BEZIERCURVE" class="-height-very-long"></canvas>
-            <div class="ColorPicker" id="picker">
+            <div class="-flexCStart -align-ifill bord-2">
+              <p class="back-2 color-dark -padALL -light">Liste des objets</p>
+              <div class="-flexCStart -align-ifill" id="OBJECTS"></div>
+            </div>
+            <div class="-flexCStart -align-ifill -margT bord-1">
+              <p class="back-1 color-dark -padALL -light">Courbe d'accélération</p>
+              <canvas id="BEZIERCURVE" class="-height-very-long"></canvas>
+            </div>
+            <div class="-flexCStart -align-ifill -margT bord-5">
+              <p class="back-5 color-dark -padALL -light">Choix de couleurs</p>
+              <div class="ColorPicker -flexCStart -padALL" id="picker"> </div>
             </div>
         </div>
     </div>

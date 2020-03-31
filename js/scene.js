@@ -96,7 +96,7 @@ function draw(Time) {
             if (resultPosition.start !== null) {
                 SCENE.selectedOptions.EDIT_KEYFRAME_START = resultPosition.frameStart;
                 SCENE.selectedOptions.EDIT_KEYFRAME_END = resultPosition.frameEnd;
-                console.log("YUSS", SCENE.selectedOptions.EDIT_KEYFRAME_START);
+                //console.log("YUSS", SCENE.selectedOptions.EDIT_KEYFRAME_START);
 
                 ctx.beginPath();
                 let p0 = resultPosition.start;
@@ -297,7 +297,7 @@ canvas.addEventListener('mousemove', function(evt) {
 
 
     if (evt.buttons == 0 || evt.buttons == 1) {
-        console.log(SCENE.selectedOptions.EDIT_KEYFRAME_START, SCENE.selectedOptions.bezierPosition.p1, SCENE.selectedOptions.bezierPosition.p2);
+        //console.log(SCENE.selectedOptions.EDIT_KEYFRAME_START, SCENE.selectedOptions.bezierPosition.p1, SCENE.selectedOptions.bezierPosition.p2);
         //Edit position bezier curve
         if (EDIT_MODE == "move" && MOUSE.down) moveTool();
         else if (SCENE.selectedOptions.EDIT_KEYFRAME_START !== null && SCENE.selectedOptions.bezierPosition.p1 || SCENE.selectedOptions.bezierPosition.p2 && EDIT_MODE == "trajectory") {
@@ -402,10 +402,11 @@ window.addEventListener('mouseup', function(evt) {
     MOUSE.down = false;
     SCENE.selectedOptions.bezierPosition.p1 = false;
     SCENE.selectedOptions.bezierPosition.p2 = false;
-})
+});
 
 function createObjectScene(position, name, color) {
     let uid = uniqueID();
+    SCENE.EDIT_ID = uid;
     SCENE.objects[uid] = {
         position: new Vector2(position.x, position.y),
         shape: [],
@@ -415,16 +416,22 @@ function createObjectScene(position, name, color) {
     };
 
     let objectElement = document.createElement("div");
-    objectElement.className = "font-min -padALL btn";
-    objectElement.innerHTML = uid;
+    objectElement.className = "font-min -padALL btn -margNone back-darkVLC";
+    objectElement.innerHTML = name;
     objectElement.addEventListener("click", () => {
         SCENE.EDIT_ID = uid;
         SCENE.SHAPE_EDIT = null;
         SCENE.resetSelectedOptions();
+        SCENE.SELECT_OBJECT_ELEMENT.classList.add("back-darkVLC");
+        SCENE.SELECT_OBJECT_ELEMENT = objectElement;
+        objectElement.classList.remove("back-darkVLC");
         // delete SCENE.objects[uid];
         // objectsCanvas.removeChild(objectElement);
     })
     objectsCanvas.appendChild(objectElement);
+    if(SCENE.SELECT_OBJECT_ELEMENT) SCENE.SELECT_OBJECT_ELEMENT.classList.add("back-darkVLC");
+    SCENE.SELECT_OBJECT_ELEMENT = objectElement;
+    objectElement.classList.remove("back-darkVLC");
     return uid;
 }
 

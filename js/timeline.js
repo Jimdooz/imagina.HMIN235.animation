@@ -35,7 +35,23 @@ let TIMELINE = {
   }
 }
 
+function updateAllBeziersCurves(anim){
+  for(let obj in anim.keyframe){
+    for(let keyPosition in anim.keyframe[obj]){
+      for(let keyAnim in anim.keyframe[obj][keyPosition]){
+        if(!anim.keyframe[obj][keyPosition][keyAnim].curve){
+          anim.keyframe[obj][keyPosition][keyAnim].curve = {};
+          let curve = anim.keyframe[obj][keyPosition][keyAnim].curve;
+          curve.p1 = new Vector2(0,0);
+          curve.p2 = new Vector2(1,1);
+        }
+      }
+    }
+  }
+}
+
 function updateGraphics(anim){
+  updateAllBeziersCurves(anim); //SALE MAIS J'ASSUME
   ctxTimeline.canvas.width  = ctxTimeline.canvas.offsetWidth;
   ctxTimeline.canvas.height = ctxTimeline.canvas.offsetHeight;
 

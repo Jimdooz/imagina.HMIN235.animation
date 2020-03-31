@@ -1,7 +1,7 @@
 let EDIT_MODE = "move";
 
 //modes :
-// move : deplacement de l'objet 
+// move : deplacement de l'objet
 // scale : scale de l'objet
 // rotate : tourne l'objet
 // edit : modifie l'objet pour ajouter des points ou déplacer des points
