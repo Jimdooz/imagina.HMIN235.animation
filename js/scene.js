@@ -404,7 +404,10 @@ window.addEventListener('mouseup', function(evt) {
     SCENE.selectedOptions.bezierPosition.p2 = false;
 });
 
+let nbElements = 0;
+
 function createObjectScene(position, name, color) {
+    nbElements++;
     let uid = uniqueID();
     SCENE.EDIT_ID = uid;
     SCENE.objects[uid] = {
@@ -441,11 +444,22 @@ SCENE.objects[obj1].shape.push(new Vector2(-50, -50));
 SCENE.objects[obj1].shape.push(new Vector2(-50, 50));
 SCENE.objects[obj1].shape.push(new Vector2(50, 50));
 
+createObjectScene(new Vector2(200, 200), "Last Object", new Color(0, 255, 0, 0.5));
+
 SCENE.EDIT_ID = createObjectScene(new Vector2(200, 200), "Second Object", new Color(0, 255, 0, 0.5));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(27, -44));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(-55, 13));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(-5, 58));
 SCENE.objects[SCENE.EDIT_ID].shape.push(new Vector2(70, 7));
+
+function createNewObject(){
+  let uid = createObjectScene(new Vector2(ctx.canvas.width / 2, ctx.canvas.height / 2), "Object " + nbElements, new Color(0, 255, 0, 0.5));
+  SCENE.objects[uid].shape.push(new Vector2(50, -50));
+  SCENE.objects[uid].shape.push(new Vector2(-50, -50));
+  SCENE.objects[uid].shape.push(new Vector2(-50, 50));
+  SCENE.objects[uid].shape.push(new Vector2(50, 50));
+}
+
 
 /*
 SCENE.objects = {
